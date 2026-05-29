@@ -1,137 +1,176 @@
-// Estados iniciais do jogo
-let water = 50;
-let temp = 24; // Temperatura em graus Celsius
-let nutrients = 60;
-let growth = 0;
-let gameActive = true;
-let gameInterval;
+// Atributos do jogador e da estufa
+let jogo = {
+    dia: 1,
+    dinheiro: 150,
+    ecoPontos: 100,
+    crescimento: 0,
+    agua: 60,
+    temp: 25,
+    nutrientes: 70,
+    ativo: true,
+    upgrades: { solar: false, sensor: false }
+};
 
-// Elementos da tela
-const waterBar = document.getElementById('water-bar');
-const waterText = document.getElementById('water-text');
-const tempBar = document.getElementById('temp-bar');
-const tempText = document.getElementById('temp-text');
-const nutrientsBar = document.getElementById('nutrients-bar');
-const nutrientsText = document.getElementById('nutrients-text');
-const growthBar = document.getElementById('growth-bar');
-const plantIcon = document.getElementById('plant-icon');
-const gameMessage = document.getElementById('game-message');
-const restartBtn = document.getElementById('restart-btn');
+// Configurações do ecossistema do tomate
+const IDEAL = { aguaMin: 40, aguaMax: 80, tempMin: 18, tempMax: 30, nutMin: 50 };
 
-// Ciclo do jogo (roda a cada 1 segundo)
-function gameLoop() {
-    if (!gameActive) return;
+function atualizarTela() {
+    // Atualiza textos básicos
+    document.getElementById('display-dia').innerText = jogo.dia;
+    document.getElementById('display-dinheiro').innerText = `R$ ${jogo.dinheiro}`;
+    document.getElementById('display-eco').innerText = jogo.ecoPontos;
+    document.getElementById('txt-water').innerText = `${jogo.agua}%`;
+    document.getElementById('txt-temp').innerText = `${jogo.temp}°C`;
+    document.getElementById('txt-nutrients').innerText = `${jogo.nutrientes}%`;
 
-    // Recursos diminuem ou oscilam com o tempo
-    water -= 3;
-    nutrients -= 2;
+    // Atualiza as barras visuais
+    document.getElementById('bar-growth').style.width = `${jogo.crescimento}%`;
+    document.getElementById('bar-growth').innerText = `${jogo.crescimento}%`;
+    document.getElementById('bar-water').style.width = `${jogo.agua}%`;
+    document.getElementById('bar-nutrients').style.width = `${jogo.nutrientes}%`;
     
-    // Temperatura oscila aleatoriamente simulando o clima externo
-    temp += Math.floor(Math.random() * 5) - 2; 
+    // Mapeamento visual simples para temperatura (0 a 40°C)
+    let tempPercent = (jogo.temp / 40) * 100;
+    document.getElementById('bar-temp').style.width = `${Math.min(tempPercent, 100)}%`;
 
-    // Limitar valores entre as margens realistas
-    if (water < 0) water = 0;
-    if (nutrients < 0) nutrients = 0;
+    // Atualiza ícone do tomate baseado no progresso
+    const plant = document.getElementById('plant-stage');
+    if (jogo.crescimento >= 100) plant.innerText = "🍅🧺";
+    else if (jogo.crescimento >= 70) plant.innerText = "🍅";
+    else if (jogo.crescimento >= 35) plant.innerText = "🌿";
+    else if (jogo.crescimento > 0) plant.innerText = "🌱";
+    else plant.innerText = "🥀";
+}
 
-    // Atualiza a interface visual
-    updateUI();
+function agir(acao) {
+    if (!jogo.ativo) return;
 
-    // Verifica condições de derrota (extremo de falta ou excesso)
-    if (water <= 0 || water >= 100 || nutrients <= 0 || temp <= 10 || temp >= 40) {
-        endGame(false);
+    if (acao === 'regar' && jogo.dinheiro >= 10) {
+        jogo.dinheiro -= 10;
+        jogo.agua = Math.min(jogo.agua + 25, 100);
+        escreverLog("💧 Você acionou a irrigação por gotejamento.");
+    } else if (acao === 'clima' && jogo.dinheiro >= 15) {
+        // Se tiver painel solar, o custo cai pela metade (Sustentabilidade!)
+        let custo = jogo.upgrades.solar ? 7 : 15;
+        if (jogo.dinheiro >= custo) {
+            jogo.dinheiro -= custo;
+            jogo.temp = 24; // Temperatura padrão climatizada
+            escreverLog("🌡️ Climatizadores ativados para estabilizar a temperatura.");
+        }
+    } else if (acao === 'adubar' && jogo.dinheiro >= 20) {
+        jogo.dinheiro -= 20;
+        jogo.nutrientes = Math.min(jogo.nutrientes + 30, 100);
+        jogo.ecoPontos += 5; // Biofertilizante gera pontos eco
+        escreverLog("🧪 Biofertilizante orgânico injetado no solo.");
+    } else {
+        escreverLog("❌ Saldo insuficiente para realizar essa ação!");
+    }
+    atualizarTela();
+}
+
+function comprarUpgrade(tipo, custo) {
+    if (jogo.dinheiro >= custo && !jogo.upgrades[tipo]) {
+        jogo.dinheiro -= custo;
+        jogo.upgrades[tipo] = true;
+        document.getElementById(`btn-${tipo}`).disabled = true;
+        document.getElementById(`btn-${tipo}`).innerText = `✅ Compra Realizada`;
+        
+        if (tipo === 'solar') {
+            jogo.ecoPontos += 30;
+            escreverLog("☀️ Painel Solar Instalado! Custos de energia reduzidos em 50%.");
+        } else if (tipo === 'sensor') {
+            escreverLog("🤖 Sensor Inteligente instalado! Ele otimizará gastos futuros.");
+        }
+        atualizarTela();
+    }
+}
+
+function passarDia() {
+    if (!jogo.ativo) return;
+
+    // 1. Desgaste natural diário dos recursos
+    jogo.agua -= jogo.upgrades.sensor ? 10 : 15; // Sensor economiza água
+    jogo.nutrientes -= 12;
+    
+    // Mudança aleatória do clima externo do dia
+    let variacaoClima = Math.floor(Math.random() * 11) - 5; // -5°C a +5°C
+    jogo.temp += variacaoClima;
+
+    // Garantir margens
+    if (jogo.agua < 0) jogo.agua = 0;
+    if (jogo.nutrientes < 0) nutrients = 0;
+
+    // 2. Cálculo do crescimento baseado na saúde da estufa
+    let emEquilibrio = (jogo.agua >= IDEAL.aguaMin && jogo.agua <= IDEAL.aguaMax &&
+                        jogo.temp >= IDEAL.tempMin && jogo.temp <= IDEAL.tempMax &&
+                        jogo.nutrientes >= IDEAL.nutMin);
+
+    if (emEquilibrio) {
+        jogo.crescimento += 15;
+        jogo.ecoPontos += 10;
+        escreverLog(`☀️ Dia ${jogo.dia}: Condições perfeitas! O tomateiro cresceu forte.`);
+    } else {
+        jogo.ecoPontos -= 15;
+        escreverLog(`⚠️ Dia ${jogo.dia}: Estufa fora de equilíbrio. O crescimento estagnou.`);
+    }
+
+    // 3. Evento Climático Aleatório (Adiciona dinamismo)
+    gerarEventoAleatorio();
+
+    // 4. Progresso do tempo e validação de fim de jogo
+    jogo.dia++;
+    
+    if (jogo.agua <= 0 || juego.agua >= 100 || jogo.temp <= 10 || jogo.temp >= 42) {
+        finalizarJogo(false, "Sua plantação murchou devido a condições extremas sem monitoramento.");
         return;
     }
 
-    // Condição para a planta crescer (Status ideais para o Tomate)
-    // Tomate gosta de água moderada (30-80), boa nutrição (>30) e temp estável (18°C a 30°C)
-    if (water >= 30 && water <= 80 && nutrients >= 30 && temp >= 18 && temp <= 30) {
-        growth += 4;
-        if (growth > 100) growth = 100;
-        gameMessage.innerText = "Condições ideais! Os tomates estão crescendo de forma sustentável 🌱";
-        gameMessage.parentElement.style.borderColor = "#4caf50";
-        gameMessage.style.color = "#1b5e20";
+    if (jogo.dia > 10) {
+        if (jogo.crescimento >= 80) {
+            finalizarJogo(true, `Excelente! Colheita farta com ${jogo.ecoPontos} Eco-Pontos arrecadados!`);
+        } else {
+            finalizarJogo(false, "O prazo acabou e os tomates não cresceram o suficiente para o comércio.");
+        }
+    }
+
+    atualizarTela();
+}
+
+function gerarEventoAleatorio() {
+    let dados = Math.random();
+    if (dados > 0.7) {
+        // Onda de calor
+        jogo.temp += 6;
+        escreverLog("🔥 Alerta: Uma onda de calor atingiu a região! A temperatura subiu.");
+    } else if (dados < 0.2) {
+        // Chuva aproveitada pelo sistema de captação da estufa
+        jogo.agua = Math.min(jogo.agua + 20, 100);
+        jogo.ecoPontos += 15;
+        escreverLog("🌧️ Sustentabilidade: Captação de água da chuva ativada! +20% umidade grátis.");
+    }
+}
+
+function escreverLog(texto) {
+    document.getElementById('log-text').innerText = texto;
+}
+
+function finalizarJogo(vitoria, motivo) {
+    jogo.ativo = false;
+    document.getElementById('next-day-btn').style.display = 'none';
+    document.getElementById('restart-btn').style.display = 'inline-block';
+    
+    if (vitoria) {
+        document.getElementById('plant-stage').innerText = "🏆🍅";
+        escreverLog(`🎉 VITÓRIA! ${motivo}`);
     } else {
-        gameMessage.innerText = "Alerta! Ajuste os parâmetros, a estufa está fora do equilíbrio ideal.";
-        gameMessage.parentElement.style.borderColor = "#ffb74d";
-        gameMessage.style.color = "#e65100";
-    }
-
-    // Muda o ícone da planta baseado no crescimento
-    if (growth >= 30 && growth < 70) {
-        plantIcon.innerText = "🌿";
-    } else if (growth >= 70 && growth < 100) {
-        plantIcon.innerText = "🍅";
-    } else if (growth >= 100) {
-        endGame(true);
+        document.getElementById('plant-stage').innerText = "🥀";
+        escreverLog(`💔 FIM DE JOGO: ${motivo}`);
     }
 }
 
-// Atualiza as barras e textos na tela
-function updateUI() {
-    waterBar.style.width = water + '%';
-    waterText.innerText = water + '%';
-
-    // Mapear a temperatura de 0°C a 40°C para uma barra de 0 a 100%
-    let tempPercentage = (temp / 40) * 100;
-    tempBar.style.width = tempPercentage + '%';
-    tempText.innerText = temp + '°C';
-
-    nutrientsBar.style.width = nutrients + '%';
-    nutrientsText.innerText = nutrients + '%';
-
-    growthBar.style.width = growth + '%';
-    growthBar.innerText = growth + '%';
+function reiniciar() {
+    location.reload(); // Recarrega a página para resetar tudo de forma limpa
 }
 
-// Ações dos botões
-function regar() {
-    if (!gameActive) return;
-    water += 15;
-    if (water > 100) water = 100;
-    updateUI();
-}
-
-function ajustarClima() {
-    if (!gameActive) return;
-    temp = 23; // Climatizador joga para a temperatura ideal do tomate
-    updateUI();
-}
-
-function adubar() {
-    if (!gameActive) return;
-    nutrients += 20;
-    if (nutrients > 100) nutrients = 100;
-    updateUI();
-}
-
-// Finalização do jogo (Vitória ou Derrota)
-function endGame(isVictory) {
-    gameActive = false;
-    clearInterval(gameInterval);
-    restartBtn.style.display = "inline-block";
-
-    if (isVictory) {
-        plantIcon.innerText = "🧺🍅";
-        gameMessage.innerText = "Parabéns! Você colheu tomates orgânicos e sustentáveis perfeitos! O futuro do Agro agradece! 🚀";
-        gameMessage.style.color = "#1b5e20";
-    } else {
-        plantIcon.innerText = "🥀";
-        gameMessage.innerText = "A estufa perdeu o equilíbrio e a plantação não resistiu. Tente novamente monitorando de perto!";
-        gameMessage.style.color = "#b71c1c";
-    }
-}
-
-// Reiniciar o jogo
-function reiniciarJogo() {
-    water = 50;
-    temp = 24;
-    nutrients = 60;
-    growth = 0;
-    gameActive = true;
-    plantIcon.innerText = "🌱";
-    restartBtn.style.display = "none";
-    gameInterval = setInterval(gameLoop, 1000);
-}
-
-// Inicia o loop assim que a página carrega
-gameInterval = setInterval(gameLoop, 1000);
+// Inicialização
+atualizarTela();

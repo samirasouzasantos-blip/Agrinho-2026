@@ -2,12 +2,12 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', Arial, sans-serif;
 }
 
 body {
-    background-color: #e8f5e9; /* Verde bem claro eco */
-    color: #2e7d32; /* Verde escuro para textos */
+    background-color: #f0f4f1;
+    color: #1b4332;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -15,177 +15,157 @@ body {
     padding: 20px;
 }
 
-.game-container {
+.game-dashboard {
+    display: grid;
+    grid-template-columns: 1fr;
     background: #ffffff;
-    max-width: 600px;
+    max-width: 900px;
     width: 100%;
-    border-radius: 15px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+@media (min-width: 768px) {
+    .game-dashboard {
+        grid-template-columns: 250px 1fr;
+    }
+}
+
+/* Barra Lateral */
+.sidebar {
+    background-color: #2d6a4f;
+    color: white;
     padding: 25px;
-    border-top: 8px solid #4caf50;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
-header {
-    text-align: center;
-    margin-bottom: 25px;
+.sidebar h2, .sidebar h3 {
+    color: #d8f3dc;
 }
 
-header h1 {
-    font-size: 1.8rem;
-    color: #1b5e20;
+.stat-box {
+    background: #40916c;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    line-height: 1.6;
 }
 
-header p {
-    font-size: 0.9rem;
-    color: #666;
+.upgrades {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
-.plant-display {
-    text-align: center;
-    background: #f1f8e9;
+.upgrades button {
+    background: #52b788;
+    color: #1b4332;
+    border: none;
+    padding: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    text-align: left;
+    transition: 0.2s;
+}
+
+.upgrades button:hover { background: #74c69d; }
+.upgrades button:disabled { background: #40916c; color: #2d6a4f; cursor: not-allowed; opacity: 0.6; }
+
+/* Conteúdo Principal */
+.main-content {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+header h1 { color: #1b4332; font-size: 1.8rem; }
+header p { color: #666; font-size: 0.95rem; }
+
+/* Visualização central */
+.greenhouse-view {
+    background: #e8f5e9;
+    border: 2px dashed #52b788;
+    border-radius: 12px;
     padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 20px;
+    text-align: center;
 }
 
-#plant-icon {
-    font-size: 4rem;
-    transition: transform 0.3s;
-}
+#plant-stage { font-size: 4.5rem; margin-bottom: 10px; transition: transform 0.3s; }
 
-.growth-box {
-    margin-top: 10px;
-}
-
-.progress-bar {
+/* Barras de Progresso */
+.progress-bar, .progress-bar-small {
     background: #e0e0e0;
     border-radius: 20px;
     overflow: hidden;
     margin-top: 5px;
-    box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
 }
+.progress-bar { height: 25px; }
+.progress-bar-small { height: 12px; margin-bottom: 8px; }
 
-#growth-bar {
-    background: linear-gradient(90deg, #4caf50, #81c784);
-    color: white;
-    text-align: center;
-    font-size: 0.85rem;
-    font-weight: bold;
-    padding: 5px 0;
-    transition: width 0.4s ease;
-}
+.fill { height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.8rem; font-weight: bold; transition: width 0.4s; }
+.growth { background: linear-gradient(90deg, #2d6a4f, #52b788); }
+.water { background-color: #3a86c8; }
+.temp { background-color: #f77f00; }
+.nutrients { background-color: #8338ec; }
 
-.controls {
+/* Grid de Controles */
+.vital-controls {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 15px;
 }
 
-@media(min-width: 480px) {
-    .controls {
-        grid-template-columns: 1fr 1fr 1fr;
-    }
-}
-
-.status-card {
-    background: #fafafa;
-    border: 1px solid #e0e0e0;
+.control-card {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
     border-radius: 10px;
     padding: 15px;
     text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
 }
 
-.status-card h3 {
-    font-size: 0.95rem;
-    margin-bottom: 10px;
-}
-
-.progress-bar-small {
-    background: #e0e0e0;
-    height: 10px;
-    border-radius: 5px;
-    overflow: hidden;
-    margin-bottom: 5px;
-}
-
-.bar {
-    height: 100%;
-    transition: width 0.3s;
-}
-
-.water { background-color: #2196f3; }
-.temp { background-color: #ff9800; }
-.nutrients { background-color: #9c27b0; }
-
-.status-card span {
-    font-size: 0.9rem;
-    font-weight: bold;
-    margin-bottom: 10px;
-    display: block;
-}
-
-button {
-    background-color: #4caf50;
+.control-card button {
+    background: #2d6a4f;
     color: white;
     border: none;
-    padding: 8px 12px;
-    border-radius: 5px;
+    padding: 8px 15px;
+    border-radius: 6px;
     cursor: pointer;
     font-weight: bold;
-    font-size: 0.85rem;
-    transition: background 0.2s;
-}
-
-button:hover {
-    background-color: #388e3c;
-}
-
-.message-center {
-    margin-top: 25px;
-    text-align: center;
-    padding: 15px;
-    background: #fff3e0;
-    border-radius: 10px;
-    border-left: 5px solid #ffb74d;
-}
-
-#game-message {
-    font-weight: 500;
-    color: #e65100;
-}
-
-#restart-btn {
-    background-color: #e65100;
-    margin-top: 10px;
-}
-
-#restart-btn:hover {
-    background-color: #b71c1c;
-}* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-body {
-    background-color: #e8f5e9;
-    color: #2e7d32;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 20px;
-}
-
-.game-container {
-    background: #ffffff;
-    max-width: 600px;
     width: 100%;
-    border-radius: 15px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-    padding: 25px;
-    border
+    transition: 0.2s;
+}
+.control-card button:hover { background: #1b4332; }
+
+/* Histórico e Ações */
+.action-zone {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.event-log {
+    background: #fff3cd;
+    border-left: 5px solid #ffc107;
+    padding: 15px;
+    border-radius: 6px;
+    min-height: 60px;
+}
+.event-log h4 { color: #856404; margin-bottom: 5px; }
+
+.primary-btn, .danger-btn {
+    border: none;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.primary-btn { background: #2d6a4f; color: white; }
+.primary-btn:hover { background: #1b4332; }
+.danger-btn { background: #d90429; color: white; }

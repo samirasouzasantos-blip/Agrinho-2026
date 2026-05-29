@@ -3,65 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agro Forte: Evolução Sustentável</title>
+    <title>Agro Forte - Simulador Completo</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="game-container">
-        <header>
-            <h1>Agro Forte, Futuro Sustentável</h1>
-            <p>Gerenciador de Estufa Automatizado</p>
-        </header>
+    <div class="game-dashboard">
+        <aside class="sidebar">
+            <h2>🌍 Painel Agro</h2>
+            <div class="stat-box">
+                <p>Dia: <strong id="display-dia">1</strong>/10</p>
+                <p>Caixa: <strong id="display-dinheiro">R$ 150</strong></p>
+                <p>Eco-Pontos: <strong id="display-eco">100</strong> 🌱</p>
+            </div>
+            
+            <div class="upgrades">
+                <h3>Upgrades Sustentáveis</h3>
+                <button id="btn-solar" onclick="comprarUpgrade('solar', 80)">☀️ Painel Solar (R$ 80)</button>
+                <button id="btn-sensor" onclick="comprarUpgrade('sensor', 50)">🤖 Sensor Inteligente (R$ 50)</button>
+            </div>
+        </aside>
 
-        <div class="game-stats">
-            <span>🎮 Partida: <strong id="match-counter">1</strong></span>
-            <span>❤️ Recompensas: <span id="hearts-container">Nenhuma</span></span>
-        </div>
+        <main class="main-content">
+            <header>
+                <h1>Estufa de Tomates Tecnológica</h1>
+                <p>Equilibre os recursos e chegue ao Dia 10 com a maior colheita possível!</p>
+            </header>
 
-        <main>
+            <section class="greenhouse-view">
+                <div id="plant-stage">🌱</div>
+                <div class="bar-container">
+                    <label>Crescimento do Tomateiro:</label>
+                    <div class="progress-bar"><div id="bar-growth" class="fill growth" style="width: 0%;">0%</div></div>
+                </div>
+            </section>
+
+            <section class="vital-controls">
+                <div class="control-card">
+                    <h4>💧 Umidade do Solo</h4>
+                    <div class="progress-bar-small"><div id="bar-water" class="fill water" style="width: 60%;"></div></div>
+                    <span id="txt-water">60%</span>
+                    <button onclick="agir('regar')">Irrigar (R$ 10)</button>
+                </div>
+
+                <div class="control-card">
+                    <h4>🌡️ Temperatura</h4>
+                    <div class="progress-bar-small"><div id="bar-temp" class="fill temp" style="width: 50%;"></div></div>
+                    <span id="txt-temp">25°C</span>
+                    <button onclick="agir('clima')">Climatizar (R$ 15)</button>
+                </div>
+
+                <div class="control-card">
+                    <h4>🧪 Nutrientes</h4>
+                    <div class="progress-bar-small"><div id="bar-nutrients" class="fill nutrients" style="width: 70%;"></div></div>
+                    <span id="txt-nutrients">70%</span>
+                    <button onclick="agir('adubar')">Biofertilizante (R$ 20)</button>
+                </div>
+            </section>
+
             <section class="action-zone">
-                <div id="farmer-node">🧑‍🌾</div>
-                <div id="effect-node"></div>
-                <div id="plant-icon">🌱</div>
-                
-                <div class="growth-box">
-                    <div class="progress-bar">
-                        <div id="growth-bar" style="width: 0%;">0%</div>
-                    </div>
+                <div class="event-log">
+                    <h4>Histórico da Estufa:</h4>
+                    <p id="log-text">O jogo começou! Use as ações para equilibrar a estufa antes de passar o dia.</p>
                 </div>
-            </section>
-
-            <section class="controls">
-                <div class="status-card">
-                    <h3>💧 Umidade do Solo</h3>
-                    <div class="progress-bar-small"><div id="water-bar" class="bar water" style="width: 50%;"></div></div>
-                    <span id="water-text">50%</span>
-                    <button onclick="regar()">Regar Solo</button>
-                </div>
-
-                <div class="status-card">
-                    <h3>🌡️ Temperatura</h3>
-                    <div class="progress-bar-small"><div id="temp-bar" class="bar temp" style="width: 50%;"></div></div>
-                    <span id="temp-text">24°C</span>
-                    <button onclick="ajustarClima()">Climatizar</button>
-                </div>
-
-                <div class="status-card">
-                    <h3>🧪 Nutrientes</h3>
-                    <div class="progress-bar-small"><div id="nutrients-bar" class="bar nutrients" style="width: 60%;"></div></div>
-                    <span id="nutrients-text">60%</span>
-                    <button onclick="adubar()">Adubar</button>
-                </div>
-            </section>
-
-            <section class="message-center">
-                <p id="game-message">Mantenha os níveis em equilíbrio para iniciar o crescimento!</p>
-                <button id="next-btn" onclick="proximaPartida()" style="display: none;">Avançar de Partida 🚀</button>
-                <button id="restart-btn" onclick="reiniciarJogo todo()" style="display: none;">Recomeçar do Zero 🔄</button>
+                <button id="next-day-btn" class="primary-btn" onclick="passarDia()">Avançar para o Próximo Dia ➡️</button>
+                <button id="restart-btn" class="danger-btn" onclick="reiniciar()" style="display:none;">Jogar Novamente 🔄</button>
             </section>
         </main>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>
