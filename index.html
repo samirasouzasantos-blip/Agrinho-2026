@@ -1,92 +1,49 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agro Forte - Monitoramento de Tomates</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #e8f5e9;
-            color: #2e7d32;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        h1 {
-            color: #1b5e20;
-            text-align: center;
-        }
-        .dashboard {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-            max-width: 800px;
-            margin-top: 20px;
-        }
-        .card {
-            background-color: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            padding: 20px;
-            width: 200px;
-            text-align: center;
-            border-top: 5px solid #4caf50;
-        }
-        .card h2 {
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-            color: #388e3c;
-        }
-        .status {
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-        .btn {
-  margin-top: 30px;
- padding: 10px 20px;
- background-color: #ff5722;
-color: white;
- border: none;
- border-radius: 5px;
-cursor: pointer;
-font-size: 1rem;
-font-weight: bold;
-  }
- .btn:hover {
- background-color: #e64a19;
-  }
-   </style>
+    <title>Estufa de Tomate Sustentável</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="game-container">
+        <h1>Estufa de Tomates 🍅</h1>
+        <p class="subtitle">Projeto: Agro Forte, Futuro Sustentável</p>
+        
+        <div class="dashboard">
+            <div class="stat">
+                <span>Água no Solo:</span>
+                <div class="progress-bar"><div id="water-bar" style="width: 50%;"></div></div>
+                <span id="water-text">50%</span>
+            </div>
+            <div class="stat">
+                <span>Temperatura Interna:</span>
+                <span id="temp-text" class="good">22°C</span>
+            </div>
+            <div class="stat">
+                <span>Crescimento do Tomate:</span>
+                <div class="progress-bar growth"><div id="growth-bar" style="width: 0%;"></div></div>
+                <span id="growth-text">0%</span>
+            </div>
+            <div class="stat">
+                <span>Tomates Colhidos:</span>
+                <b id="score-text">0</b>
+            </div>
+        </div>
 
-<h1>🍅 Dashboard Agro Forte</h1>
-<p>Monitoramento Sustentável da Estufa em Tempo Real</p>
+        <div class="controls">
+            <button id="btn-water" class="btn">💧 Irrigar Solo</button>
+            <button id="btn-temp-up" class="btn">🔥 Ligar Aquecedor</button>
+            <button id="btn-temp-down" class="btn">❄️ Ligar Ventilação</button>
+            <button id="btn-harvest" class="btn" disabled>🧺 Colher Tomate</button>
+        </div>
 
-<div class="dashboard">
-<div class="card">
-<h2>💧 Umidade do Solo</h2>
-<div class="status" style="color: #1976d2;">65%</div>
-<p>Irrigação: Desligada</p>
-</div>
-
-<div class="card" style="border-top-color: #ff9800;">
-<h2>🐞 Defesa Natural</h2>
-<div class="status" style="color: #f57c00;">Seguro</div>
-<p>Zero pragas detectadas</p>
-</div>
-
-<div class="card" style="border-top-color: #ffeb3b;">
-<h2>☀️ Energia</h2>
-<div class="status" style="color: #fbc02d;">100%</div>
-<p>Matriz Solar Ativa</p>
-</div>
-</div>
-
-<button class="btn">Atualizar Sensores</button>
-
+        <div class="info-box">
+            <h3>Manual de Sustentabilidade:</h3>
+            <p id="message">Mantenha a água entre 40% e 80% e a temperatura entre 20°C e 26°C para o tomate crescer rápido!</p>
+        </div>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html>
