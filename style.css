@@ -164,4 +164,28 @@ button:hover {
 
 #restart-btn:hover {
     background-color: #b71c1c;
+}* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
+body {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.game-container {
+    background: #ffffff;
+    max-width: 600px;
+    width: 100%;
+    border-radius: 15px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    padding: 25px;
+    border

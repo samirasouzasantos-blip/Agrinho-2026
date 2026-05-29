@@ -3,21 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agro Forte: Simulador de Estufa</title>
+    <title>Agro Forte: Evolução Sustentável</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="game-container">
         <header>
             <h1>Agro Forte, Futuro Sustentável</h1>
-            <p>Gerencie sua Estufa de Tomates Tecnológica</p>
+            <p>Gerenciador de Estufa Automatizado</p>
         </header>
 
+        <div class="game-stats">
+            <span>🎮 Partida: <strong id="match-counter">1</strong></span>
+            <span>❤️ Recompensas: <span id="hearts-container">Nenhuma</span></span>
+        </div>
+
         <main>
-            <section class="plant-display">
+            <section class="action-zone">
+                <div id="farmer-node">🧑‍🌾</div>
+                <div id="effect-node"></div>
                 <div id="plant-icon">🌱</div>
+                
                 <div class="growth-box">
-                    <label>Progresso do Crescimento:</label>
                     <div class="progress-bar">
                         <div id="growth-bar" style="width: 0%;">0%</div>
                     </div>
@@ -36,20 +43,21 @@
                     <h3>🌡️ Temperatura</h3>
                     <div class="progress-bar-small"><div id="temp-bar" class="bar temp" style="width: 50%;"></div></div>
                     <span id="temp-text">24°C</span>
-                    <button onclick="ajustarClima()">Ligar Climatizador</button>
+                    <button onclick="ajustarClima()">Climatizar</button>
                 </div>
 
                 <div class="status-card">
-                    <h3>🧪 Nutrientes (Orgânico)</h3>
+                    <h3>🧪 Nutrientes</h3>
                     <div class="progress-bar-small"><div id="nutrients-bar" class="bar nutrients" style="width: 60%;"></div></div>
                     <span id="nutrients-text">60%</span>
-                    <button onclick="adubar()">Adicionar Nutrientes</button>
+                    <button onclick="adubar()">Adubar</button>
                 </div>
             </section>
 
             <section class="message-center">
-                <p id="game-message">Mantenha os níveis equilibrados para o tomate crescer saudável!</p>
-                <button id="restart-btn" onclick="reiniciarJogo()" style="display: none;">Jogar Novamente</button>
+                <p id="game-message">Mantenha os níveis em equilíbrio para iniciar o crescimento!</p>
+                <button id="next-btn" onclick="proximaPartida()" style="display: none;">Avançar de Partida 🚀</button>
+                <button id="restart-btn" onclick="reiniciarJogo todo()" style="display: none;">Recomeçar do Zero 🔄</button>
             </section>
         </main>
     </div>
