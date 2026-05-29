@@ -1,90 +1,167 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #e8f5e9;
-    color: #2e7d32;
+    background-color: #e8f5e9; /* Verde bem claro eco */
+    color: #2e7d32; /* Verde escuro para textos */
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    margin: 0;
+    min-height: 100vh;
+    padding: 20px;
 }
 
 .game-container {
-    background: white;
-    padding: 30px;
+    background: #ffffff;
+    max-width: 600px;
+    width: 100%;
     border-radius: 15px;
     box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-    text-align: center;
-    max-width: 420px;
-    width: 100%;
+    padding: 25px;
+    border-top: 8px solid #4caf50;
 }
 
-h1 { margin-bottom: 5px; color: #c62828; }
-.subtitle { font-style: italic; color: #558b2f; margin-top: 0; font-size: 14px; }
+header {
+    text-align: center;
+    margin-bottom: 25px;
+}
 
-.dashboard { margin: 25px 0; text-align: left; }
-.stat { margin-bottom: 15px; font-weight: bold; }
+header h1 {
+    font-size: 1.8rem;
+    color: #1b5e20;
+}
+
+header p {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.plant-display {
+    text-align: center;
+    background: #f1f8e9;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+#plant-icon {
+    font-size: 4rem;
+    transition: transform 0.3s;
+}
+
+.growth-box {
+    margin-top: 10px;
+}
 
 .progress-bar {
     background: #e0e0e0;
-    border-radius: 10px;
-    height: 18px;
-    width: 100%;
+    border-radius: 20px;
     overflow: hidden;
     margin-top: 5px;
-    margin-bottom: 2px;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
 }
 
-#water-bar { background: #2196f3; height: 100%; transition: width 0.3s; }
-#growth-bar { background: #4caf50; height: 100%; transition: width 0.3s; }
-
-.controls { 
-    display: grid; 
-    grid-template-columns: 1fr 1fr; 
-    gap: 12px; 
-    margin-top: 20px; 
-}
-
-.btn {
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
-    font-size: 13px;
-    cursor: pointer;
+#growth-bar {
+    background: linear-gradient(90deg, #4caf50, #81c784);
     color: white;
+    text-align: center;
+    font-size: 0.85rem;
     font-weight: bold;
-    transition: transform 0.1s, background 0.2s;
+    padding: 5px 0;
+    transition: width 0.4s ease;
 }
 
-.btn:active { transform: scale(0.95); }
-
-#btn-water { background-color: #1e88e5; }
-#btn-temp-up { background-color: #f4511e; }
-#btn-temp-down { background-color: #00acc1; }
-
-#btn-harvest { 
-    background-color: #e53935; 
-    grid-column: span 2; 
-    font-size: 16px;
+.controls {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
 }
 
-#btn-harvest:disabled { 
-    background-color: #bdbdbd; 
-    cursor: not-allowed; 
-    opacity: 0.6;
+@media(min-width: 480px) {
+    .controls {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
 }
 
-.info-box {
-    margin-top: 20px;
-    background-color: #f1f8e9;
-    padding: 10px;
-    border-radius: 8px;
-    border-left: 5px solid #4caf50;
-    text-align: left;
+.status-card {
+    background: #fafafa;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
-.info-box h3 { margin: 0 0 5px 0; font-size: 14px; }
-#message { font-size: 13px; color: #424242; margin: 0; line-height: 1.4; }
+.status-card h3 {
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+}
 
-.warning { color: #d32f2f; font-weight: bold; }
-.good { color: #2e7d32; font-weight: bold; }
+.progress-bar-small {
+    background: #e0e0e0;
+    height: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+.bar {
+    height: 100%;
+    transition: width 0.3s;
+}
+
+.water { background-color: #2196f3; }
+.temp { background-color: #ff9800; }
+.nutrients { background-color: #9c27b0; }
+
+.status-card span {
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    display: block;
+}
+
+button {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.85rem;
+    transition: background 0.2s;
+}
+
+button:hover {
+    background-color: #388e3c;
+}
+
+.message-center {
+    margin-top: 25px;
+    text-align: center;
+    padding: 15px;
+    background: #fff3e0;
+    border-radius: 10px;
+    border-left: 5px solid #ffb74d;
+}
+
+#game-message {
+    font-weight: 500;
+    color: #e65100;
+}
+
+#restart-btn {
+    background-color: #e65100;
+    margin-top: 10px;
+}
+
+#restart-btn:hover {
+    background-color: #b71c1c;
+}

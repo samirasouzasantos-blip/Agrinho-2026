@@ -3,47 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estufa de Tomate Sustentável</title>
+    <title>Agro Forte: Simulador de Estufa</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="game-container">
-        <h1>Estufa de Tomates 🍅</h1>
-        <p class="subtitle">Projeto: Agro Forte, Futuro Sustentável</p>
-        
-        <div class="dashboard">
-            <div class="stat">
-                <span>Água no Solo:</span>
-                <div class="progress-bar"><div id="water-bar" style="width: 50%;"></div></div>
-                <span id="water-text">50%</span>
-            </div>
-            <div class="stat">
-                <span>Temperatura Interna:</span>
-                <span id="temp-text" class="good">22°C</span>
-            </div>
-            <div class="stat">
-                <span>Crescimento do Tomate:</span>
-                <div class="progress-bar growth"><div id="growth-bar" style="width: 0%;"></div></div>
-                <span id="growth-text">0%</span>
-            </div>
-            <div class="stat">
-                <span>Tomates Colhidos:</span>
-                <b id="score-text">0</b>
-            </div>
-        </div>
+        <header>
+            <h1>Agro Forte, Futuro Sustentável</h1>
+            <p>Gerencie sua Estufa de Tomates Tecnológica</p>
+        </header>
 
-        <div class="controls">
-            <button id="btn-water" class="btn">💧 Irrigar Solo</button>
-            <button id="btn-temp-up" class="btn">🔥 Ligar Aquecedor</button>
-            <button id="btn-temp-down" class="btn">❄️ Ligar Ventilação</button>
-            <button id="btn-harvest" class="btn" disabled>🧺 Colher Tomate</button>
-        </div>
+        <main>
+            <section class="plant-display">
+                <div id="plant-icon">🌱</div>
+                <div class="growth-box">
+                    <label>Progresso do Crescimento:</label>
+                    <div class="progress-bar">
+                        <div id="growth-bar" style="width: 0%;">0%</div>
+                    </div>
+                </div>
+            </section>
 
-        <div class="info-box">
-            <h3>Manual de Sustentabilidade:</h3>
-            <p id="message">Mantenha a água entre 40% e 80% e a temperatura entre 20°C e 26°C para o tomate crescer rápido!</p>
-        </div>
+            <section class="controls">
+                <div class="status-card">
+                    <h3>💧 Umidade do Solo</h3>
+                    <div class="progress-bar-small"><div id="water-bar" class="bar water" style="width: 50%;"></div></div>
+                    <span id="water-text">50%</span>
+                    <button onclick="regar()">Regar Solo</button>
+                </div>
+
+                <div class="status-card">
+                    <h3>🌡️ Temperatura</h3>
+                    <div class="progress-bar-small"><div id="temp-bar" class="bar temp" style="width: 50%;"></div></div>
+                    <span id="temp-text">24°C</span>
+                    <button onclick="ajustarClima()">Ligar Climatizador</button>
+                </div>
+
+                <div class="status-card">
+                    <h3>🧪 Nutrientes (Orgânico)</h3>
+                    <div class="progress-bar-small"><div id="nutrients-bar" class="bar nutrients" style="width: 60%;"></div></div>
+                    <span id="nutrients-text">60%</span>
+                    <button onclick="adubar()">Adicionar Nutrientes</button>
+                </div>
+            </section>
+
+            <section class="message-center">
+                <p id="game-message">Mantenha os níveis equilibrados para o tomate crescer saudável!</p>
+                <button id="restart-btn" onclick="reiniciarJogo()" style="display: none;">Jogar Novamente</button>
+            </section>
+        </main>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>
