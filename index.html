@@ -3,359 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agro Forte - Simulador Completo</title>
-    <style>
-        :root {
-            --primary: #2e7d32;
-            --primary-light: #4caf50;
-            --background: #f1f8e9;
-            --card-bg: #ffffff;
-            --text: #333333;
-            --accent: #e65100;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--background);
-            color: var(--text);
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 600px;
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        h1, h2, h3, h4 {
-            color: var(--primary);
-            text-align: center;
-            margin-top: 0;
-        }
-
-        .dashboard {
-            display: flex;
-            justify-content: space-around;
-            background: #e8f5e9;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-weight: bold;
-        }
-
-        .upgrades, .status-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .status-grid {
-            grid-template-columns: 1fr;
-        }
-
-        button {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background 0.2s;
-            width: 100%;
-        }
-
-        button:hover {
-            background-color: var(--primary-light);
-        }
-
-        button:disabled {
-            background-color: #cccccc;
-            cursor: not-allowed;
-        }
-
-        .card {
-            border: 1px solid #e0e0e0;
-            padding: 15px;
-            border-radius: 8px;
-            background: #fafafa;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
-        }
-
-        .flex-status {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .progress-bar {
-            background-color: #e0e0e0;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-top: 10px;
-            height: 20px;
-        }
-
-        .progress-fill {
-            background-color: var(--primary-light);
-            height: 100%;
-            width: 0%;
-            transition: width 0.5s ease;
-            text-align: center;
-            color: white;
-            font-size: 12px;
-            line-height: 20px;
-        }
-
-        .log-box {
-            background: #333;
-            color: #fff;
-            padding: 15px;
-            border-radius: 8px;
-            height: 100px;
-            overflow-y: auto;
-            font-family: monospace;
-            font-size: 13px;
-            margin-bottom: 20px;
-        }
-
-        .actions-main {
-            display: flex;
-            gap: 10px;
-        }
-
-        .btn-next {
-            background-color: var(--accent);
-            flex: 2;
-            font-size: 16px;
-            font-weight: bold;
-        }
-
-        .btn-next:hover {
-            background-color: #ef6c00;
-        }
-
-        .btn-reset {
-            background-color: #757575;
-            flex: 1;
-        }
-    </style>
+    <title>Mini-Craft 2D: Rancho de Gado</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="container">
-    <h1>Estufa de Tomates Tecnológica</h1>
-    <p style="text-align: center; font-size: 14px; margin-top: -10px;">Equilibre os recursos e chegue ao Dia 10 com a maior colheita!</p>
+    <h1>Automated 🤠 Mini-Craft 2D: Criador de Animais</h1>
+    <p>Escolha um item. Clique no Céu para <strong>Construir</strong> | Clique no item feito para <strong>Remover</strong></p>
 
-    <div class="dashboard">
-        <div>Dia: <span id="lbl-dia">1</span>/10</div>
-        <div>Caixa: R$ <span id="lbl-caixa">150</span></div>
-        <div>Eco-Pontos: <span id="lbl-eco">100</span> 🌱</div>
-    </div>
+    <div id="rancho"></div>
 
-    <h3>Upgrades Sustentáveis</h3>
-    <div class="upgrades">
-        <button id="btn-solar" onclick="comprarUpgrade('solar', 80)">☀️ Painel Solar (R$ 80)</button>
-        <button id="btn-sensor" onclick="comprarUpgrade('sensor', 50)">🤖 Sensor Inteligente (R$ 50)</button>
-    </div>
-
-    <div class="card" style="margin-bottom: 20px;">
-        <div class="flex-status">
-            <strong>Crescimento do Tomateiro:</strong>
-            <span id="lbl-growth" style="font-weight: bold; color: var(--primary);">0%</span>
+    <div class="hotbar">
+        <div class="slot ativo" onclick="mudarFerramenta('grass', '', this)">
+            <div class="preview grass"></div>
+            <span class="slot-texto">Pasto</span>
         </div>
-        <div class="progress-bar">
-            <div id="bar-growth" class="progress-fill"></div>
+        <div class="slot" onclick="mudarFerramenta('fence', '🪵', this)">
+            <span style="font-size: 16px;">🪵</span>
+            <span class="slot-texto">Cerca</span>
         </div>
-    </div>
-
-    <div class="status-grid">
-        <div class="card flex-status">
-            <div>
-                <strong>💧 Umidade do Solo:</strong> <span id="lbl-umidade">60</span>%
-            </div>
-            <button style="width: auto;" onclick="agir('umidade', 10, 20)">Irrigar (R$ 10)</button>
+        <div class="slot" onclick="mudarFerramenta('water', '💧', this)">
+            <span style="font-size: 16px;">💧</span>
+            <span class="slot-texto">Água</span>
         </div>
-
-        <div class="card flex-status">
-            <div>
-                <strong>Definição 🌡️ Temperatura:</strong> <span id="lbl-temp">25</span>°C
-            </div>
-            <button style="width: auto;" onclick="agir('temperatura', 15, 0)">Climatizar (R$ 15)</button>
+        <div class="slot" onclick="mudarFerramenta('cattle', '🐄', this)">
+            <span style="font-size: 18px;">🐄</span>
+            <span class="slot-texto">Gado</span>
         </div>
-
-        <div class="card flex-status">
-            <div>
-                <strong>🧪 Nutrientes:</strong> <span id="lbl-nutrientes">70</span>%
-            </div>
-            <button style="width: auto;" onclick="agir('nutrientes', 20, 15)">Biofertilizante (R$ 20)</button>
+        <div class="slot" onclick="mudarFerramenta('pig', '🐖', this)">
+            <span style="font-size: 18px;">🐖</span>
+            <span class="slot-texto">Porco</span>
         </div>
     </div>
 
-    <h4>Histórico da Estufa:</h4>
-    <div id="log" class="log-box">O jogo começou! Use as ações para equilibrar a estufa antes de passar o dia.</div>
-
-    <div class="actions-main">
-        <button id="btn-avancar" class="btn-next" onclick="proximoDia()">Avançar para o Próximo Dia ➡️</button>
-        <button class="btn-reset" onclick="reiniciar()">Jogar Novamente 🔄</button>
-    </div>
-</div>
-
-<script>
-    // Estado inicial do jogo
-    let estado = {
-        dia: 1,
-        caixa: 150,
-        ecoPontos: 100,
-        growth: 0,
-        umidade: 60,
-        temp: 25,
-        nutrientes: 70,
-        upgradeSolar: false,
-        upgradeSensor: false
-    };
-
-    function atualizarTela() {
-        document.getElementById('lbl-dia').innerText = estado.dia;
-        document.getElementById('lbl-caixa').innerText = estado.caixa;
-        document.getElementById('lbl-eco').innerText = estado.ecoPontos;
-        document.getElementById('lbl-growth').innerText = estado.growth + '%';
-        document.getElementById('bar-growth').style.width = estado.growth + '%';
-        document.getElementById('lbl-umidade').innerText = estado.umidade;
-        document.getElementById('lbl-temp').innerText = estado.temp;
-        document.getElementById('lbl-nutrientes').innerText = estado.nutrientes;
-
-        // Trata estado dos botões de upgrade
-        document.getElementById('btn-solar').disabled = estado.upgradeSolar || estado.caixa < 80;
-        document.getElementById('btn-sensor').disabled = estado.upgradeSensor || estado.caixa < 50;
-        
-        if(estado.upgradeSolar) document.getElementById('btn-solar').innerText = "☀️ Painel Solar (Ativo)";
-        if(estado.upgradeSensor) document.getElementById('btn-sensor').innerText = "🤖 Sensor Ativo";
-    }
-
-    function adicionarLog(texto) {
-        const logBox = document.getElementById('log');
-        logBox.innerHTML += `<br>> ${texto}`;
-        logBox.scrollTop = logBox.scrollHeight;
-    }
-
-    function agir(tipo, custo, ecoGanho) {
-        if (estado.caixa < custo) {
-            adicionarLog("Dinheiro insuficiente para essa ação!");
-            return;
-        }
-
-        estado.caixa -= custo;
-        estado.ecoPontos += ecoGanho;
-
-        if (tipo === 'umidade') {
-            estado.umidade = Math.min(100, estado.umidade + 25);
-            adicionarLog("Você irrigou a estufa. Umidade subiu!");
-        } else if (tipo === 'temperatura') {
-            estado.temp = 25; // Estabiliza na temperatura ideal
-            adicionarLog("Climatizador ativado. Temperatura normalizada para 25°C.");
-        } else if (tipo === 'nutrientes') {
-            estado.nutrientes = Math.min(100, estado.nutrientes + 20);
-            adicionarLog("Biofertilizante aplicado com sucesso!");
-        }
-
-        atualizarTela();
-    }
-
-    function comprarUpgrade(tipo, custo) {
-        if (estado.caixa >= custo) {
-            estado.caixa -= custo;
-            if (tipo === 'solar') {
-                estado.upgradeSolar = true;
-                estado.ecoPontos += 40;
-                adicionarLog("Painel Solar comprado! Gera R$ 15 de bônus todo dia.");
-            } else if (tipo === 'sensor') {
-                estado.upgradeSensor = true;
-                adicionarLog("Sensor Inteligente comprado! Reduz a perda de recursos diária.");
-            }
-            atualizarTela();
-        }
-    }
-
-    function proximoDia() {
-        if (estado.dia >= 10) {
-            adicionarLog(`Fim de jogo! Sua colheita final foi de ${estado.growth}% com ${estado.ecoPoints} Eco-Pontos.`);
-            document.getElementById('btn-avancar').disabled = true;
-            return;
-        }
-
-        // Fatores de perda diária (atenuados se tiver o sensor)
-        let perdaUmidade = estado.upgradeSensor ? 10 : 20;
-        let perdaNutrientes = estado.upgradeSensor ? 8 : 15;
-
-        estado.umidade = Math.max(0, estado.umidade - perdaUmidade);
-        estado.nutrientes = Math.max(0, estado.nutrientes - perdaNutrientes);
-        
-        // Temperatura oscila randomicamente entre -5°C e +5°C
-        let variacaoTemp = Math.floor(Math.random() * 11) - 5;
-        estado.temp += variacaoTemp;
-
-        // Bônus do Painel Solar
-        if (estado.upgradeSolar) {
-            estado.caixa += 15;
-        }
-
-        // Ganho de dinheiro básico por dia
-        estado.caixa += 30;
-
-        // Cálculo de crescimento do tomateiro baseado nas condições ideais
-        let condicoesIdeais = true;
-        if (estado.umidade < 40 || estado.umidade > 80) condicoesIdeais = false;
-        if (estado.temp < 18 || estado.temp > 32) condicoesIdeais = false;
-        if (estado.nutrientes < 40) condicoesIdeais = false;
-
-        if (condicoesIdeais) {
-            estado.growth = Math.min(100, estado.growth + 15);
-            estado.ecoPontos += 10;
-            adicionarLog(`Dia ${estado.dia} concluído. Ótimas condições! O tomateiro cresceu bem.`);
-        } else {
-            estado.growth = Math.min(100, estado.growth + 5);
-            adicionarLog(`Dia ${estado.dia} concluído. Condições fora do ideal! O tomateiro cresceu pouco.`);
-        }
-
-        estado.dia += 15 == 15 ? estado.dia + 1 : estado.dia; // apenas avança o contador de forma limpa
-        estado.dia = Math.min(10, estado.dia); 
-
-        if (estado.dia === 10) {
-            adicionarLog(`🎉 FIM DE JOGO! Resultado da Colheita: ${estado.growth}% | Eco-Pontos: ${estado.ecoPontos}`);
-            document.getElementById('btn-avancar').disabled = true;
-        }
-
-        atualizarTela();
-    }
-
-    function reiniciar() {
-        estado = {
-            dia: 1,
-            caixa: 150,
-            ecoPontos: 100,
-            growth: 0,
-            umidade: 60,
-            temp: 25,
-            nutrientes: 70,
-            upgradeSolar: false,
-            upgradeSensor: false
-        };
-        document.getElementById('btn-avancar').disabled = false;
-        document.getElementById('log').innerHTML = "Jogo reiniciado! Cuide da sua estufa.";
-        atualizarTela();
-    }
-
-    // Inicializa a interface
-    atualizarTela();
-</script>
-
+    <script src="script.js"></script>
 </body>
 </html>
