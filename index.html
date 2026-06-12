@@ -3,36 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mini-Craft 2D: Rancho de Gado</title>
+    <title>Rancho Bovino - Simulador</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <h1>Automated 🤠 Mini-Craft 2D: Criador de Animais</h1>
-    <p>Escolha um item. Clique no Céu para <strong>Construir</strong> | Clique no item feito para <strong>Remover</strong></p>
+    <div class="game-container">
+        <h1>🚜 Simulador de Pecuária</h1>
+        <p class="subtitle">Gerencie seu rebanho, cuide da saúde do gado e lucre com o leite!</p>
 
-    <div id="rancho"></div>
+        <div class="stats-bar">
+            <div>📆 Dia: <span id="txt-dia">1</span>/15</div>
+            <div>💰 Capital: R$ <span id="txt-moedas">120</span></div>
+            <div>🌾 Silagem: <span id="txt-ração">4</span> un.</div>
+        </div>
 
-    <div class="hotbar">
-        <div class="slot ativo" onclick="mudarFerramenta('grass', '', this)">
-            <div class="preview grass"></div>
-            <span class="slot-texto">Pasto</span>
+        <div class="cow-card">
+            <div class="cow-avatar">🐄</div>
+            <div class="cow-info">
+                <h3>Estado do Gado</h3>
+                <div class="status-line">⚡ Energia: <strong id="txt-energia">100%</strong></div>
+                <div class="status-line">❤️ Saúde: <strong id="txt-saude">100%</strong></div>
+                <div class="status-line">🥛 Produção: <strong id="txt-leite">Pendente</strong></div>
+            </div>
         </div>
-        <div class="slot" onclick="mudarFerramenta('fence', '🪵', this)">
-            <span style="font-size: 16px;">🪵</span>
-            <span class="slot-texto">Cerca</span>
+
+        <div class="actions-section">
+            <h3>Manejo Diário</h3>
+            <div class="actions-grid">
+                <button class="btn-action btn-feed" onclick="alimentarGado()">Alimentar Rebanho (1 un.)</button>
+                <button class="btn-action btn-milk" id="btn-ordenha" onclick="coletarLeite()" disabled>Coletar Leite</button>
+                <button class="btn-action btn-vet" onclick="chamarVeterinario()">Chamar Vet (R$ 30)</button>
+                <button class="btn-action btn-shop" onclick="comprarSuprimentos()">Comprar Nutrição (R$ 20)</button>
+            </div>
         </div>
-        <div class="slot" onclick="mudarFerramenta('water', '💧', this)">
-            <span style="font-size: 16px;">💧</span>
-            <span class="slot-texto">Água</span>
+
+        <div class="log-container">
+            <h4>📋 Relatório do Capataz:</h4>
+            <div id="log-box">> O gado está descansado no pasto. Lembre-se de alimentá-lo antes de encerrar o dia.</div>
         </div>
-        <div class="slot" onclick="mudarFerramenta('cattle', '🐄', this)">
-            <span style="font-size: 18px;">🐄</span>
-            <span class="slot-texto">Gado</span>
-        </div>
-        <div class="slot" onclick="mudarFerramenta('pig', '🐖', this)">
-            <span style="font-size: 18px;">🐖</span>
-            <span class="slot-texto">Porco</span>
+
+        <div class="footer-controls">
+            <button class="btn-next" id="btn-next-day" onclick="avancarDia()">Encerrar o Dia e Avançar ➡️</button>
         </div>
     </div>
 
