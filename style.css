@@ -1,155 +1,125 @@
 :root {
-    --bg-color: #f4f6f0;
-    --panel-color: #ffffff;
-    --text-main: #2c3e50;
-    --green-farm: #27ae60;
-    --brown-cattle: #855e42;
-    --blue-water: #2980b9;
-    --danger-red: #c0392b;
+    --sky: #74b9ff;
+    --grass: #2ed573;
+    --dirt: #57606f;
+    --fence: #d1a36a;
+    --water: #1e90ff;
+    --hotbar-bg: #2f3542;
 }
 
 body {
-    background-color: var(--bg-color);
-    color: var(--text-main);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
-    padding: 20px;
+    padding: 0;
+    background-color: #1e222b;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: white;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
     min-height: 100vh;
+    overflow: hidden;
 }
 
-.game-container {
-    background: var(--panel-color);
-    width: 100%;
-    max-width: 600px;
-    padding: 25px;
-    border-radius: 16px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+.header {
+    text-align: center;
+    margin-bottom: 15px;
 }
 
 h1 {
-    color: var(--green-farm);
-    text-align: center;
-    margin: 0 0 5px 0;
+    margin: 0;
+    font-size: 28px;
+    text-shadow: 2px 2px #000;
+    letter-spacing: 1px;
 }
 
-.subtitle {
-    text-align: center;
+p {
+    margin: 5px 0 0 0;
     font-size: 14px;
-    color: #7f8c8d;
-    margin: 0 0 20px 0;
+    color: #a4b0be;
 }
 
-.stats-bar {
+/* Tabuleiro / Mundo em Blocos */
+#mundo {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    background: #edf7ed;
-    padding: 12px;
-    border-radius: 8px;
-    text-align: center;
-    font-weight: bold;
-    color: #1e4620;
-    margin-bottom: 20px;
+    grid-template-columns: repeat(20, 35px);
+    grid-template-rows: repeat(12, 35px);
+    border: 6px solid #2f3542;
+    background-color: var(--sky);
+    box-shadow: 0 12px 36px rgba(0,0,0,0.6);
 }
 
-.cow-card {
+/* Estilo Base dos Blocos do Minecraft */
+.bloco {
+    width: 35px;
+    height: 35px;
+    box-sizing: border-box;
+    cursor: pointer;
     display: flex;
     align-items: center;
-    background: #fdfefe;
-    border: 2px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 15px;
-    margin-bottom: 20px;
-    gap: 20px;
+    justify-content: center;
+    font-size: 20px;
+    user-select: none;
 }
 
-.cow-avatar {
-    font-size: 50px;
-    background: #f5efe6;
-    padding: 10px;
-    border-radius: 50%;
+.bloco:hover {
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    filter: brightness(1.1);
 }
 
-.cow-info {
-    flex-grow: 1;
-}
+/* Texturas dos Blocos */
+.sky { background-color: var(--sky); }
+.dirt { background-color: #74563c; border: 1px solid #5d432e; }
+.grass { background-color: var(--grass); border-bottom: 3px solid #26af50; }
+.fence { background-color: var(--fence); border: 2px dashed #b78a52; }
+.water { background-color: var(--water); border: 1px solid #0984e3; }
+.cow { background-color: var(--sky); } /* Gado flutua visualmente no céu/pasto */
 
-.cow-info h3 {
-    margin: 0 0 8px 0;
-    color: var(--brown-cattle);
-}
-
-.status-line {
-    font-size: 15px;
-    margin-bottom: 4px;
-}
-
-.actions-section h3 {
-    margin: 0 0 12px 0;
-    font-size: 16px;
-    border-bottom: 2px solid #f1f5f9;
-    padding-bottom: 4px;
-}
-
-.actions-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 25px;
-}
-
-.btn-action {
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
-    color: #fff;
-    font-weight: bold;
-    cursor: pointer;
-    transition: opacity 0.2s;
-}
-
-.btn-action:hover { opacity: 0.9; }
-.btn-action:disabled { background-color: #cbd5e1 !important; cursor: not-allowed; color: #94a3b8; }
-
-.btn-feed { background-color: var(--green-farm); }
-.btn-milk { background-color: var(--blue-water); }
-.btn-vet { background-color: var(--danger-red); }
-.btn-shop { background-color: #e67e22; }
-
-.log-container {
-    background: #1e293b;
-    color: #e2e8f0;
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-}
-
-.log-container h4 { margin: 0 0 6px 0; color: #94a3b8; }
-
-#log-box {
-    font-family: monospace;
-    font-size: 13px;
-    height: 60px;
-    overflow-y: auto;
-}
-
-.footer-controls {
+/* Inventário / Hotbar Inferior */
+.hotbar {
     display: flex;
+    gap: 12px;
+    margin-top: 25px;
+    background: var(--hotbar-bg);
+    padding: 8px 16px;
+    border: 3px solid #747d8c;
+    border-radius: 4px;
 }
 
-.btn-next {
-    width: 100%;
-    padding: 14px;
-    background: var(--brown-cattle);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: bold;
+.slot {
+    width: 55px;
+    height: 55px;
+    border: 3px solid #747d8c;
+    background: #57606f;
+    border-radius: 2px;
     cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
 }
 
-.btn-next:hover { background: #6d4c33; }
-.btn-next:disabled { background: #94a3b8; }
+.slot:hover {
+    background: #747d8c;
+}
+
+.slot.ativo {
+    border-color: #f1c40f;
+    background: #34495e;
+}
+
+.preview {
+    width: 20px;
+    height: 20px;
+}
+
+.emoji {
+    font-size: 20px;
+}
+
+.label {
+    font-size: 9px;
+    font-weight: bold;
+    margin-top: 2px;
+}
