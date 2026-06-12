@@ -1,55 +1,48 @@
 :root {
-    --sky: #74b9ff;
-    --grass: #2ed573;
-    --dirt: #57606f;
+    --sky: #81ecec;
+    --grass: #26de81;
     --fence: #d1a36a;
-    --water: #1e90ff;
-    --hotbar-bg: #2f3542;
+    --water: #45aaf2;
+    --dirt: #a5b1c2;
 }
 
 body {
     margin: 0;
     padding: 0;
-    background-color: #1e222b;
+    background-color: #202b38;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: white;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     min-height: 100vh;
+    color: white;
     overflow: hidden;
 }
 
-.header {
-    text-align: center;
-    margin-bottom: 15px;
-}
-
 h1 {
-    margin: 0;
-    font-size: 28px;
+    margin: 0 0 5px 0;
+    font-size: 26px;
     text-shadow: 2px 2px #000;
-    letter-spacing: 1px;
+    color: #26de81;
 }
 
 p {
-    margin: 5px 0 0 0;
+    margin: 0 0 15px 0;
     font-size: 14px;
-    color: #a4b0be;
+    color: #a5b1c2;
 }
 
-/* Tabuleiro / Mundo em Blocos */
-#mundo {
+#rancho {
     display: grid;
     grid-template-columns: repeat(20, 35px);
     grid-template-rows: repeat(12, 35px);
-    border: 6px solid #2f3542;
+    border: 5px solid #4b6584;
+    border-radius: 4px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
     background-color: var(--sky);
-    box-shadow: 0 12px 36px rgba(0,0,0,0.6);
 }
 
-/* Estilo Base dos Blocos do Minecraft */
 .bloco {
     width: 35px;
     height: 35px;
@@ -63,63 +56,59 @@ p {
 }
 
 .bloco:hover {
-    border: 1px solid rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.7);
     filter: brightness(1.1);
 }
 
-/* Texturas dos Blocos */
 .sky { background-color: var(--sky); }
-.dirt { background-color: #74563c; border: 1px solid #5d432e; }
-.grass { background-color: var(--grass); border-bottom: 3px solid #26af50; }
+.grass { background-color: var(--grass); border-bottom: 2px solid #20bf6b; }
+.dirt { background-color: #778ca3; }
 .fence { background-color: var(--fence); border: 2px dashed #b78a52; }
-.water { background-color: var(--water); border: 1px solid #0984e3; }
-.cow { background-color: var(--sky); } /* Gado flutua visualmente no céu/pasto */
+.water { background-color: var(--water); border: 1px solid #2d98da; }
+.cattle, .pig { background-color: var(--sky); }
 
-/* Inventário / Hotbar Inferior */
 .hotbar {
     display: flex;
     gap: 12px;
-    margin-top: 25px;
-    background: var(--hotbar-bg);
-    padding: 8px 16px;
-    border: 3px solid #747d8c;
-    border-radius: 4px;
+    margin-top: 20px;
+    background: #4b6584;
+    padding: 10px 20px;
+    border-radius: 10px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.3);
 }
 
 .slot {
-    width: 55px;
-    height: 55px;
-    border: 3px solid #747d8c;
-    background: #57606f;
-    border-radius: 2px;
+    width: 50px;
+    height: 50px;
+    border: 3px solid #cbd5e1;
+    background: #202b38;
+    border-radius: 8px;
     cursor: pointer;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     position: relative;
+    transition: transform 0.1s;
 }
 
 .slot:hover {
-    background: #747d8c;
+    transform: scale(1.05);
 }
 
 .slot.ativo {
-    border-color: #f1c40f;
-    background: #34495e;
+    border-color: #f7b731;
+    background: #4b6484;
 }
 
 .preview {
     width: 20px;
     height: 20px;
+    border-radius: 2px;
 }
 
-.emoji {
-    font-size: 20px;
-}
-
-.label {
+.slot-texto {
     font-size: 9px;
-    font-weight: bold;
     margin-top: 2px;
+    font-weight: bold;
 }
