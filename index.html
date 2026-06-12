@@ -3,354 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eco-Survival: Simulador Realista</title>
-    <style>
-        :root {
-            --bg-dark: #121824;
-            --card-dark: #1e293b;
-            --text-light: #f8fafc;
-            --primary: #10b981;
-            --danger: #ef4444;
-            --warning: #f59e0b;
-            --info: #3b82f6;
-        }
-
-        body {
-            margin: 0;
-            padding: 20px;
-            background-color: var(--bg-dark);
-            color: var(--text-light);
-            font-family: 'Segoe UI', Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-        }
-
-        .game-container {
-            width: 100%;
-            max-width: 800px;
-            background: var(--card-dark);
-            border-radius: 16px;
-            padding: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        /* Top Bar - Ambiente */
-        .ambient-bar {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            background: rgba(0,0,0,0.3);
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
-            font-weight: bold;
-            margin-bottom: 25px;
-        }
-
-        /* Grid de Status Biológicos */
-        .status-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 25px;
-        }
-
-        .status-card {
-            background: rgba(255,255,255,0.03);
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .bar-container {
-            background: #334155;
-            height: 15px;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-top: 8px;
-        }
-
-        .bar-fill {
-            height: 100%;
-            width: 100%;
-            transition: width 0.4s ease, background-color 0.4s;
-        }
-
-        /* Painel de Ações e Inventário */
-        .panel-grid {
-            display: grid;
-            grid-template-columns: 1.2fr 0.8fr;
-            gap: 20px;
-            margin-bottom: 25px;
-        }
-
-        .actions-layout {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-
-        button {
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            background: #475569;
-            transition: background 0.2s;
-        }
-
-        button:hover { background: #64748b; }
-        button:disabled { background: #1e293b; color: #64748b; cursor: not-allowed; }
-
-        .btn-survival { background: var(--primary); }
-        .btn-survival:hover { background: #059669; }
-
-        .inventory-box {
-            background: rgba(0,0,0,0.2);
-            padding: 15px;
-            border-radius: 8px;
-            font-size: 14px;
-        }
-
-        /* Log do Jogo */
-        .log-box {
-            background: #0f172a;
-            border: 1px solid #334155;
-            color: #94a3b8;
-            padding: 15px;
-            border-radius: 8px;
-            height: 120px;
-            overflow-y: auto;
-            font-family: monospace;
-            font-size: 13px;
-        }
-
-        .log-important { color: var(--danger); }
-        .log-success { color: var(--primary); }
-    </style>
+    <title>VacinaCraft 2D</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="game-container">
-    <h2 style="text-align:center; margin-top:0; color: var(--primary);">🌲 Eco-Survival: Realismo Extremo</h2>
-    
-    <div class="ambient-bar">
-        <div>⏱️ Hora: <span id="env-time">08:00</span></div>
-        <div>☁️ Clima: <span id="env-weather">Ensolarado</span></div>
-        <div>🌡️ Temp. Ar: <span id="env-temp">24°C</span></div>
-    </div>
-
-    <div class="status-grid">
-        <div class="status-card">
-            <div style="display:flex; justify-content:between;">❤️ Saúde: <span id="val-health">100</span>%</div>
-            <div class="bar-container"><div id="bar-health" class="bar-fill" style="background:var(--danger)"></div></div>
-        </div>
-        <div class="status-card">
-            <div>🔥 Temp. Corporal: <span id="val-bodytemp">36.5</span>°C</div>
-            <div class="bar-container"><div id="bar-bodytemp" class="bar-fill" style="background:var(--warning)"></div></div>
-        </div>
-        <div class="status-card">
-            <div>🍖 Energia Metabólica: <span id="val-energy">100</span>%</div>
-            <div class="bar-container"><div id="bar-energy" class="bar-fill" style="background:var(--primary)"></div></div>
-        </div>
-        <div class="status-card">
-            <div>💧 Hidratação: <span id="val-hydration">100</span>%</div>
-            <div class="bar-container"><div id="bar-hydration" class="bar-fill" style="background:var(--info)"></div></div>
+    <div class="painel-topo">
+        <h1>💉 VacinaCraft 2D</h1>
+        <p>Monte o manejo com cercas e vacine o gado antes que o tempo esgote!</p>
+        <div class="placar">
+            <div>🐄 Vacinados: <span id="qtd-vacinados">0</span></div>
+            <div>⏱️ Tempo: <span id="tempo-restante">45</span>s</div>
         </div>
     </div>
 
-    <div class="panel-grid">
-        <div>
-            <h3 style="margin-top:0;">Ações Disponíveis</h3>
-            <div class="actions-layout">
-                <button class="btn-survival" onclick="actionForage()">Procurar Alimento/Água</button>
-                <button class="btn-survival" onclick="actionChop()">Coletar Lenha</button>
-                <button class="btn-survival" onclick="actionBuild()">Melhorar Abrigo</button>
-                <button class="btn-survival" onclick="actionFire()">Acender Fogueira</button>
-                <button style="grid-column: span 2;" onclick="actionRest()">Descansar (Avança 1 Hora)</button>
-            </div>
-        </div>
+    <div id="grade-mundo"></div>
 
-        <div class="inventory-box">
-            <h3 style="margin-top:0; color:var(--warning);">🎒 Mochila</h3>
-            <p>🥩 Carne Crua: <span id="inv-food">0</span> un.</p>
-            <p>🪵 Lenha Seca: <span id="inv-wood">0</span> un.</p>
-            <p>⛺ Nível do Abrigo: <span id="inv-shelter">0</span>/5</p>
-            <p>🔥 Fogueira: <span id="inv-fire">Apagada</span></p>
+    <div class="hotbar">
+        <div class="slot ativo" onclick="selecionarItem('fence', '🪵', this)">
+            <span class="icone">🪵</span>
+            <span class="legenda">Cerca</span>
+        </div>
+        <div class="slot" onclick="selecionarItem('syringe', '💉', this)">
+            <span class="icone">💉</span>
+            <span class="legenda">Vacina</span>
+        </div>
+        <div class="slot" onclick="selecionarItem('cow', '🐄', this)">
+            <span class="icone">🐄</span>
+            <span class="legenda">Gado</span>
         </div>
     </div>
 
-    <div id="log" class="log-box">> Você acordou no meio da floresta selvagem. Sobreviva o máximo de tempo que puder.</div>
-</div>
-
-<script>
-    // Configurações e Estado Inicial do Sistema
-    let sim = {
-        hour: 8,
-        weather: 'Ensolarado',
-        airTemp: 24,
-        // Status do Jogador
-        health: 100,
-        bodyTemp: 36.5,
-        energy: 100,
-        hydration: 100,
-        // Inventário
-        food: 0,
-        wood: 2,
-        shelter: 0,
-        fireTicks: 0 // Duração da fogueira em horas
-    };
-
-    const weathers = ['Ensolarado', 'Nublado', 'Chovendo', 'Tempestade Fria'];
-
-    function updateUI() {
-        document.getElementById('env-time').innerText = `${String(sim.hour).padStart(2, '0')}:00`;
-        document.getElementById('env-weather').innerText = sim.weather;
-        document.getElementById('env-temp').innerText = `${sim.airTemp}°C`;
-
-        document.getElementById('val-health').innerText = Math.round(sim.health);
-        document.getElementById('bar-health').style.width = `${sim.health}%`;
-        
-        document.getElementById('val-bodytemp').innerText = sim.bodyTemp.toFixed(1);
-        // Calcula barra de temperatura baseada no desvio do ideal (36.5)
-        let tempPct = Math.max(0, 100 - Math.abs(36.5 - sim.bodyTemp) * 15);
-        document.getElementById('bar-bodytemp').style.width = `${tempPct}%`;
-
-        document.getElementById('val-energy').innerText = Math.round(sim.energy);
-        document.getElementById('bar-energy').style.width = `${sim.energy}%`;
-
-        document.getElementById('val-hydration').innerText = Math.round(sim.hydration);
-        document.getElementById('bar-hydration').style.width = `${sim.hydration}%`;
-
-        // Inventário
-        document.getElementById('inv-food').innerText = sim.food;
-        document.getElementById('inv-wood').innerText = sim.wood;
-        document.getElementById('inv-shelter').innerText = sim.shelter;
-        document.getElementById('inv-fire').innerText = sim.fireTicks > 0 ? `Ativa (${sim.fireTicks}h)` : 'Apagada';
-
-        if (sim.health <= 0) {
-            document.querySelectorAll('button').forEach(b => b.disabled = true);
-            addLog("💀 VOCÊ MORREU! O ambiente venceu. Atualize a página para tentar novamente.", "log-important");
-        }
-    }
-
-    function addLog(text, className = "") {
-        const log = document.getElementById('log');
-        log.innerHTML += `<br><span class="${className}">> ${text}</span>`;
-        log.scrollTop = log.scrollHeight;
-    }
-
-    // Passagem de tempo processa as regras biológicas complexas
-    function processTimeStep() {
-        sim.hour = (sim.hour + 1) % 24;
-
-        // 1. Mudança de clima realista baseada na hora do dia
-        if (Math.random() < 0.15) {
-            sim.weather = weathers[Math.floor(Math.random() * weathers.length)];
-            addLog(`O clima mudou para: ${sim.weather}`, "log-important");
-        }
-
-        // 2. Cálculo da temperatura do ar (Noite é mais fria, tempestades congelam)
-        if (sim.hour > 18 || sim.hour < 6) {
-            sim.airTemp = sim.weather === 'Tempestade Fria' ? 2 : 10;
-        } else {
-            sim.airTemp = sim.weather === 'Ensolarado' ? 28 : (sim.weather === 'Chovendo' ? 18 : 22);
-        }
-
-        // 3. Efeito do fogo e abrigo na temperatura do corpo
-        let idealTemp = 36.5;
-        let isolamento = (sim.shelter * 2) + (sim.fireTicks > 0 ? 8 : 0);
-        let tempAlvo = sim.airTemp + isolamento;
-
-        if (tempAlvo < 22) {
-            sim.bodyTemp -= 0.3; // Hipotermia gradual
-        } else if (tempAlvo > 38 && sim.weather === 'Ensolarado') {
-            sim.bodyTemp += 0.2; // Desidratação por calor
-        } else {
-            // Corpo se recupera em direção aos 36.5°C
-            if (sim.bodyTemp < idealTemp) sim.bodyTemp = Math.min(idealTemp, sim.bodyTemp + 0.2);
-            if (sim.bodyTemp > idealTemp) sim.bodyTemp = Math.max(idealTemp, sim.bodyTemp - 0.2);
-        }
-
-        // 4. Consumo metabólico básico
-        sim.hydration = Math.max(0, sim.hydration - (sim.weather === 'Ensolarado' ? 5 : 3));
-        sim.energy = Math.max(0, sim.energy - 4);
-
-        // Redução da fogueira
-        if (sim.fireTicks > 0) sim.fireTicks--;
-
-        // 5. Danos à Saúde por negligência biológica
-        if (sim.hydration <= 0 || sim.energy <= 0 || sim.bodyTemp < 34.5 || sim.bodyTemp > 38.5) {
-            sim.health = Math.max(0, sim.health - 8);
-            addLog("⚠️ Seu corpo está sofrendo danos severos!", "log-important");
-        } else if (sim.health < 100 && sim.energy > 50 && sim.hydration > 50) {
-            sim.health = Math.min(100, sim.health + 2); // Cura natural
-        }
-
-        updateUI();
-    }
-
-    // Ações do Menu
-    function actionForage() {
-        if (sim.energy < 15) { addLog("Muito cansado para vasculhar!", "log-important"); return; }
-        sim.energy -= 12;
-        
-        if (Math.random() > 0.4) {
-            sim.food += 2;
-            addLog("Você encontrou carne e frutos comestíveis.", "log-success");
-        } else {
-            sim.hydration = Math.min(100, sim.hydration + 30);
-            addLog("Você achou uma fonte de água limpa e se hidratou.");
-        }
-        processTimeStep();
-    }
-
-    function actionChop() {
-        if (sim.energy < 20) { addLog("Sem forças para machucar árvores.", "log-important"); return; }
-        sim.energy -= 18;
-        sim.wood += Math.floor(Math.random() * 3) + 1;
-        addLog("Madeira coletada com sucesso.");
-        processTimeStep();
-    }
-
-    function actionBuild() {
-        if (sim.wood >= 4 && sim.shelter < 5) {
-            sim.wood -= 4;
-            sim.shelter++;
-            addLog(`Abrigo reforçado! Nível atual: ${sim.shelter}`, "log-success");
-            processTimeStep();
-        } else {
-            addLog("Madeira insuficiente (Necessário 4) ou abrigo já está no máximo.");
-        }
-    }
-
-    function actionFire() {
-        if (sim.wood >= 1) {
-            sim.wood--;
-            sim.fireTicks += 4;
-            addLog("Você alimentou a fogueira. Mais calor garantido.");
-            updateUI();
-        } else {
-            addLog("Falta madeira para queimar.");
-        }
-    }
-
-    function actionRest() {
-        sim.energy = Math.min(100, sim.energy + 15);
-        if (sim.food > 0) {
-            sim.food--;
-            sim.energy = Math.min(100, sim.energy + 20);
-            addLog("Você comeu uma porção de comida antes de dormir.");
-        }
-        addLog("Você descansou por uma hora.");
-        processTimeStep();
-    }
-
-    // Start
-    updateUI();
-</script>
-
+    <script src="script.js"></script>
 </body>
 </html>
